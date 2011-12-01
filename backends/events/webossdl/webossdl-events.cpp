@@ -323,40 +323,59 @@ bool WebOSSdlEventSource::handleMouseMotion(SDL_Event &ev,
 		case 2:
 			// Check for a three-finger swipe
 			if (_fingerDown[0] && _fingerDown[1]) {
-				// Swipe to the right toggles Auto-drag
 				if (_dragDiffX[0] > _swipeDistX &&
 						_dragDiffX[1] > _swipeDistX &&
 						_dragDiffX[2] > _swipeDistX) {
+					// Swipe right to emulate right arrow
 					// Virtually lift fingers to prevent repeat triggers
 					_fingerDown[0] = _fingerDown[1] = _fingerDown[2] = false;
-					// Toggle Auto-drag mode
-					_autoDragMode = !_autoDragMode;
-					// I18N: Auto-drag toggle status.
-					Common::String dialogMsg(_("Auto-drag mode is now"));
-					dialogMsg += " ";
-					// I18N: Auto-drag on or off.
-					dialogMsg += (_autoDragMode ? _("ON") : _("OFF"));
-					dialogMsg += ".\n";
-					// I18N: Instructions to toggle auto-drag.
-					dialogMsg += _(
-						"Swipe three fingers to the right to toggle.");
-					GUI::TimedMessageDialog dialog(dialogMsg, 1500);
-					dialog.runModal();
-					return true;
+					// Press right
+					event.type = Common::EVENT_KEYDOWN;
+					event.kbd.flags = 0;
+					event.kbd.keycode = Common::KEYCODE_RIGHT;
+					event.kbd.ascii = Common::ASCII_RIGHT;
+					_queuedRightUpTime = g_system->getMillis() +
+						QUEUED_KEY_DELAY;
+				} else if (_dragDiffX[0] * -1 > _swipeDistX &&
+						_dragDiffX[1] * -1 > _swipeDistX &&
+						_dragDiffX[2] * -1 > _swipeDistX ) {
+					// Swipe left to emulate left arrow
+					// Virtually lift fingers to prevent repeat triggers
+					_fingerDown[0] = _fingerDown[1] = _fingerDown[2] = false;
+					// Press right
+					event.type = Common::EVENT_KEYDOWN;
+					event.kbd.flags = 0;
+					event.kbd.keycode = Common::KEYCODE_LEFT;
+					event.kbd.ascii = Common::ASCII_LEFT;
+					_queuedLeftUpTime = g_system->getMillis() +
+						QUEUED_KEY_DELAY;
 				} else if (_dragDiffY[0] > _swipeDistY &&
 						_dragDiffY[1] > _swipeDistY &&
 						_dragDiffY[2] > _swipeDistY ) {
-					// Swipe down to emulate spacebar (pause)
+					// Swipe down to emulate down arrow
 					// Virtually lift fingers to prevent repeat triggers
 					_fingerDown[0] = _fingerDown[1] = _fingerDown[2] = false;
-					// Press space
+					// Press right
 					event.type = Common::EVENT_KEYDOWN;
 					event.kbd.flags = 0;
-					event.kbd.keycode = Common::KEYCODE_SPACE;
-					event.kbd.ascii = Common::ASCII_SPACE;
-					_queuedSpaceUpTime = g_system->getMillis() +
+					event.kbd.keycode = Common::KEYCODE_DOWN;
+					event.kbd.ascii = Common::ASCII_DOWN;
+					_queuedDownUpTime = g_system->getMillis() +
 						QUEUED_KEY_DELAY;
-				}
+				} else if (_dragDiffY[0] * -1 > _swipeDistY &&
+						_dragDiffY[1] * -1 > _swipeDistY &&
+						_dragDiffY[2] * -1 > _swipeDistY ) {
+					// Swipe up to emulate up arrow
+					// Virtually lift fingers to prevent repeat triggers
+					_fingerDown[0] = _fingerDown[1] = _fingerDown[2] = false;
+					// Press right
+					event.type = Common::EVENT_KEYDOWN;
+					event.kbd.flags = 0;
+					event.kbd.keycode = Common::KEYCODE_UP;
+					event.kbd.ascii = Common::ASCII_UP;
+					_queuedUpUpTime = g_system->getMillis() +
+						QUEUED_KEY_DELAY;
+			  }
 			}
 		}
 	}
@@ -397,12 +416,33 @@ bool WebOSSdlEventSource::pollEvent(Common::Event &event) {
 		event.kbd.ascii = Common::ASCII_ESCAPE;
 		_queuedEscapeUpTime = 0;
 		return true;
-	} else if (_queuedSpaceUpTime != 0 && curTime >= _queuedSpaceUpTime) {
+	} else if (_queuedRightUpTime != 0 && curTime >= _queuedRightUpTime) {
 		event.type = Common::EVENT_KEYUP;
 		event.kbd.flags = 0;
-		event.kbd.keycode = Common::KEYCODE_SPACE;
-		event.kbd.ascii = Common::ASCII_SPACE;
-		_queuedSpaceUpTime = 0;
+		event.kbd.keycode = Common::KEYCODE_RIGHT;
+		event.kbd.ascii = Common::ASCII_RIGHT;
+		_queuedRightUpTime = 0;
+		return true;
+	} else if (_queuedLeftUpTime != 0 && curTime >= _queuedLeftUpTime) {
+		event.type = Common::EVENT_KEYUP;
+		event.kbd.flags = 0;
+		event.kbd.keycode = Common::KEYCODE_LEFT;
+		event.kbd.ascii = Common::ASCII_LEFT;
+		_queuedLeftUpTime = 0;
+		return true;
+	} else if (_queuedDownUpTime != 0 && curTime >= _queuedDownUpTime) {
+		event.type = Common::EVENT_KEYUP;
+		event.kbd.flags = 0;
+		event.kbd.keycode = Common::KEYCODE_DOWN;
+		event.kbd.ascii = Common::ASCII_DOWN;
+		_queuedDownUpTime = 0;
+		return true;
+	} else if (_queuedUpUpTime != 0 && curTime >= _queuedUpUpTime) {
+		event.type = Common::EVENT_KEYUP;
+		event.kbd.flags = 0;
+		event.kbd.keycode = Common::KEYCODE_UP;
+		event.kbd.ascii = Common::ASCII_UP;
+		_queuedUpUpTime = 0;
 		return true;
 	} else if (_queuedRUpTime != 0 && curTime >= _queuedRUpTime) {
 		event.type = Common::EVENT_RBUTTONUP;

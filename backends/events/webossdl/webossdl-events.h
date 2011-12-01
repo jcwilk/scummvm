@@ -47,7 +47,9 @@ public:
 			_screenX(0), _screenY(0),
 			_touchpadMode(false), _autoDragMode(true),
 			_doClick(true),
-			_queuedDragTime(0), _queuedEscapeUpTime(0), _queuedSpaceUpTime(0),
+			_queuedDragTime(0), _queuedEscapeUpTime(0),
+			_queuedRightUpTime(0), _queuedLeftUpTime(0),
+			_queuedDownUpTime(0), _queuedUpUpTime(0),
 			_queuedRUpTime(0),
 			_firstPoll(true) {
 		for (int i = 0; i < MAX_FINGERS; i++) {
@@ -96,7 +98,8 @@ protected:
 	bool _firstPoll;
 
 	// Event queues
-	uint32 _queuedDragTime, _queuedEscapeUpTime, _queuedSpaceUpTime,
+	uint32 _queuedDragTime, _queuedEscapeUpTime, _queuedRightUpTime,
+	  _queuedLeftUpTime, _queuedDownUpTime, _queuedUpUpTime,
 		_queuedRUpTime;
 
 	// SDL overrides
