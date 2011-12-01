@@ -333,7 +333,7 @@ bool WebOSSdlEventSource::handleMouseMotion(SDL_Event &ev,
 					event.type = Common::EVENT_KEYDOWN;
 					event.kbd.flags = 0;
 					event.kbd.keycode = Common::KEYCODE_RIGHT;
-					event.kbd.ascii = Common::ASCII_RIGHT;
+					event.kbd.ascii = 0;
 					_queuedRightUpTime = g_system->getMillis() +
 						QUEUED_KEY_DELAY;
 				} else if (_dragDiffX[0] * -1 > _swipeDistX &&
@@ -346,7 +346,7 @@ bool WebOSSdlEventSource::handleMouseMotion(SDL_Event &ev,
 					event.type = Common::EVENT_KEYDOWN;
 					event.kbd.flags = 0;
 					event.kbd.keycode = Common::KEYCODE_LEFT;
-					event.kbd.ascii = Common::ASCII_LEFT;
+					event.kbd.ascii = 0;
 					_queuedLeftUpTime = g_system->getMillis() +
 						QUEUED_KEY_DELAY;
 				} else if (_dragDiffY[0] > _swipeDistY &&
@@ -359,7 +359,7 @@ bool WebOSSdlEventSource::handleMouseMotion(SDL_Event &ev,
 					event.type = Common::EVENT_KEYDOWN;
 					event.kbd.flags = 0;
 					event.kbd.keycode = Common::KEYCODE_DOWN;
-					event.kbd.ascii = Common::ASCII_DOWN;
+					event.kbd.ascii = 0;
 					_queuedDownUpTime = g_system->getMillis() +
 						QUEUED_KEY_DELAY;
 				} else if (_dragDiffY[0] * -1 > _swipeDistY &&
@@ -372,7 +372,7 @@ bool WebOSSdlEventSource::handleMouseMotion(SDL_Event &ev,
 					event.type = Common::EVENT_KEYDOWN;
 					event.kbd.flags = 0;
 					event.kbd.keycode = Common::KEYCODE_UP;
-					event.kbd.ascii = Common::ASCII_UP;
+					event.kbd.ascii = 0;
 					_queuedUpUpTime = g_system->getMillis() +
 						QUEUED_KEY_DELAY;
 			  }
@@ -420,28 +420,28 @@ bool WebOSSdlEventSource::pollEvent(Common::Event &event) {
 		event.type = Common::EVENT_KEYUP;
 		event.kbd.flags = 0;
 		event.kbd.keycode = Common::KEYCODE_RIGHT;
-		event.kbd.ascii = Common::ASCII_RIGHT;
+		event.kbd.ascii = 0;
 		_queuedRightUpTime = 0;
 		return true;
 	} else if (_queuedLeftUpTime != 0 && curTime >= _queuedLeftUpTime) {
 		event.type = Common::EVENT_KEYUP;
 		event.kbd.flags = 0;
 		event.kbd.keycode = Common::KEYCODE_LEFT;
-		event.kbd.ascii = Common::ASCII_LEFT;
+		event.kbd.ascii = 0;
 		_queuedLeftUpTime = 0;
 		return true;
 	} else if (_queuedDownUpTime != 0 && curTime >= _queuedDownUpTime) {
 		event.type = Common::EVENT_KEYUP;
 		event.kbd.flags = 0;
 		event.kbd.keycode = Common::KEYCODE_DOWN;
-		event.kbd.ascii = Common::ASCII_DOWN;
+		event.kbd.ascii = 0;
 		_queuedDownUpTime = 0;
 		return true;
 	} else if (_queuedUpUpTime != 0 && curTime >= _queuedUpUpTime) {
 		event.type = Common::EVENT_KEYUP;
 		event.kbd.flags = 0;
 		event.kbd.keycode = Common::KEYCODE_UP;
-		event.kbd.ascii = Common::ASCII_UP;
+		event.kbd.ascii = 0;
 		_queuedUpUpTime = 0;
 		return true;
 	} else if (_queuedRUpTime != 0 && curTime >= _queuedRUpTime) {
