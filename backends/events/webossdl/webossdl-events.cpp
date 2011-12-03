@@ -342,7 +342,7 @@ bool WebOSSdlEventSource::handleMouseMotion(SDL_Event &ev,
 					// Swipe left to emulate left arrow
 					// Virtually lift fingers to prevent repeat triggers
 					_fingerDown[0] = _fingerDown[1] = _fingerDown[2] = false;
-					// Press right
+					// Press left
 					event.type = Common::EVENT_KEYDOWN;
 					event.kbd.flags = 0;
 					event.kbd.keycode = Common::KEYCODE_LEFT;
@@ -355,7 +355,7 @@ bool WebOSSdlEventSource::handleMouseMotion(SDL_Event &ev,
 					// Swipe down to emulate down arrow
 					// Virtually lift fingers to prevent repeat triggers
 					_fingerDown[0] = _fingerDown[1] = _fingerDown[2] = false;
-					// Press right
+					// Press down
 					event.type = Common::EVENT_KEYDOWN;
 					event.kbd.flags = 0;
 					event.kbd.keycode = Common::KEYCODE_DOWN;
@@ -368,7 +368,7 @@ bool WebOSSdlEventSource::handleMouseMotion(SDL_Event &ev,
 					// Swipe up to emulate up arrow
 					// Virtually lift fingers to prevent repeat triggers
 					_fingerDown[0] = _fingerDown[1] = _fingerDown[2] = false;
-					// Press right
+					// Press up
 					event.type = Common::EVENT_KEYDOWN;
 					event.kbd.flags = 0;
 					event.kbd.keycode = Common::KEYCODE_UP;
